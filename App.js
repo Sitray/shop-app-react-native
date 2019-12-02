@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   cart: cartReducer
 });
 
-const store = createStore(rootReducer, composeWithDevTools());
+const store = createStore(rootReducer);
 
 const fetchFonts = () => {
   return Font.loadAsync({
