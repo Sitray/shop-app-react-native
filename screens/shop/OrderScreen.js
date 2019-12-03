@@ -17,6 +17,7 @@ const OrderScreen = () => {
           <OrderItem
             amount={itemData.item.totalAmount}
             date={itemData.item.redeableDate}
+            items={itemData.item.items}
           />
         </Text>
       )}
