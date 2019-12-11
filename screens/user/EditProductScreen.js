@@ -1,12 +1,11 @@
 import React, { useEffect, useCallback, useReducer } from 'react';
 import {
   View,
-  Text,
   ScrollView,
-  TextInput,
   StyleSheet,
   Platform,
-  Alert
+  Alert,
+  KeyboardAvoidingView
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -115,60 +114,66 @@ const EditProductScreen = props => {
 
   if (prod)
     return (
-      <ScrollView>
-        <View style={styles.form}>
-          <Input
-            id="title"
-            label="title"
-            errorText="Please enter a valid title!"
-            keyboardType="default"
-            autoCapitalize="sentences"
-            returnKeyType="next"
-            onInputChange={inputChangeHandler}
-            initialValue={editedProduct ? editedProduct.title : ''}
-            initiallyValid={!!editedProduct}
-            required
-          />
-          <Input
-            id="imageUrl"
-            label="Image URL"
-            errorText="Please enter a valid image url!"
-            returnKeyType="next"
-            onInputChange={inputChangeHandler}
-            initialValue={editedProduct ? editedProduct.imageUrl : ''}
-            initiallyValid={!!editedProduct}
-            required
-          />
-          {editedProduct ? null : (
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior="padding"
+        keyboardVerticalOffset={100}
+      >
+        <ScrollView>
+          <View style={styles.form}>
             <Input
-              id="price"
-              label="Price"
-              errorText="Please enter a valid price!"
-              keyboardType="decimal-pad"
+              id="title"
+              label="title"
+              errorText="Please enter a valid title!"
+              keyboardType="default"
               autoCapitalize="sentences"
               returnKeyType="next"
               onInputChange={inputChangeHandler}
-              min={0.1}
+              initialValue={editedProduct ? editedProduct.title : ''}
+              initiallyValid={!!editedProduct}
+              required
             />
-          )}
-          <Input
-            id="description"
-            label="description"
-            errorText="Please enter a valid description!"
-            keyboardType="default"
-            autoCapitalize="sentences"
-            returnKeyType="next"
-            autoCorrect
-            multiline
-            numberOfLines={3}
-            initialValue={editedProduct ? editedProduct.description : ''}
-            initiallyValid={!!editedProduct}
-            onInputChange={inputChangeHandler.bind(this, 'description')}
-            required
-            minLength={5}
-          />
-        </View>
-      </ScrollView>
+            <Input
+              id="imageUrl"
+              label="Image URL"
+              errorText="Please enter a valid image url!"
+              returnKeyType="next"
+              onInputChange={inputChangeHandler}
+              initialValue={editedProduct ? editedProduct.imageUrl : ''}
+              initiallyValid={!!editedProduct}
+              required
+            />
+            {editedProduct ? null : (
+              <Input
+                id="price"
+                label="Price"
+                errorText="Please enter a valid price!"
+                keyboardType="decimal-pad"
+                autoCapitalize="sentences"
+                returnKeyType="next"
+                onInputChange={inputChangeHandler}
+                min={0.1}
+              />
+            )}
+            <Input
+              id="description"
+              label="description"
+              errorText="Please enter a valid description!"
+              keyboardType="default"
+              autoCapitalize="sentences"
+              returnKeyType="next"
+              autoCorrect
+              multiline
+              numberOfLines={3}
+              initialValue={editedProduct ? editedProduct.description : ''}
+              initiallyValid={!!editedProduct}
+              onInputChange={inputChangeHandler.bind(this, 'description')}
+              required
+              minLength={5}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
 };
 
