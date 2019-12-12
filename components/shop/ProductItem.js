@@ -20,7 +20,7 @@ const ProductItem = props => {
 
   return (
     <Card style={styles.product}>
-      <View>
+      <View style={styles.touchable}>
         <TouchableCmp onPress={props.onSelect} useForeground>
           <View>
             <View style={styles.imageContainer}>
@@ -28,7 +28,7 @@ const ProductItem = props => {
             </View>
             <View style={styles.details}>
               <Text style={styles.title}>{props.title}</Text>
-              <Text style={styles.price}>{props.price.toFixed(2)}</Text>
+              <Text style={styles.price}>${props.price.toFixed(2)}</Text>
             </View>
             <View style={styles.actions}>{props.children}</View>
           </View>
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
     margin: 20
   },
   touchable: {
-    overflow: 'hidden',
-    borderRadius: 10
+    borderRadius: 10,
+    overflow: 'hidden'
   },
   imageContainer: {
     width: '100%',
-    height: '100%',
+    height: '60%',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     overflow: 'hidden'
@@ -69,9 +69,9 @@ const styles = StyleSheet.create({
     marginVertical: 2
   },
   price: {
+    fontFamily: 'open-sans',
     fontSize: 14,
-    color: '#888',
-    fontFamily: 'open-sans-bold'
+    color: '#888'
   },
   actions: {
     flexDirection: 'row',

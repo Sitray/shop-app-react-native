@@ -14,10 +14,10 @@ import HeaderButton from '../../components/UI/HeaderButton';
 import * as productsActions from '../../store/actions/products';
 import Input from '../../components/UI/Input';
 
-const FORM_UPDATE = 'FORM_UPDATE';
+const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
 const formReducer = (state, action) => {
-  if (action.type === FORM_UPDATE) {
+  if (action.type === FORM_INPUT_UPDATE) {
     const updatedValues = {
       ...state.inputValues,
       [action.input]: action.value
@@ -27,26 +27,23 @@ const formReducer = (state, action) => {
       [action.input]: action.isValid
     };
     let updatedFormIsValid = true;
-
     for (const key in updatedValidities) {
-      updatedFormIsValid = formIsValid && updatedValidities[key];
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
     }
-
     return {
       formIsValid: updatedFormIsValid,
       inputValidities: updatedValidities,
       inputValues: updatedValues
     };
   }
+  return state;
 };
 
 const EditProductScreen = props => {
-  const prodId = props.navigation.getPram('productId');
-
+  const prodId = props.navigation.getParam('productId');
   const editedProduct = useSelector(state =>
     state.products.userProducts.find(prod => prod.id === prodId)
   );
-
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -67,12 +64,11 @@ const EditProductScreen = props => {
 
   const submitHandler = useCallback(() => {
     if (!formState.formIsValid) {
-      Alert.alert('wrong input', 'Please check the errors on the input', [
+      Alert.alert('Wrong input!', 'Please check the errors in the form.', [
         { text: 'Okay' }
       ]);
       return;
     }
-
     if (editedProduct) {
       dispatch(
         productsActions.updateProduct(
@@ -84,104 +80,102 @@ const EditProductScreen = props => {
       );
     } else {
       dispatch(
-        productsActions.create(
+        productsActions.createProduct(
           formState.inputValues.title,
-          formState.inputValues.imageUrl,
           formState.inputValues.description,
+          formState.inputValues.imageUrl,
           +formState.inputValues.price
         )
       );
     }
-
     props.navigation.goBack();
   }, [dispatch, prodId, formState]);
 
   useEffect(() => {
-    props.navigation.setPrams({ submit: submitHandler });
+    props.navigation.setParams({ submit: submitHandler });
   }, [submitHandler]);
 
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {
       dispatchFormState({
-        type: FORM_UPDATE,
+        type: FORM_INPUT_UPDATE,
         value: inputValue,
         isValid: inputValidity,
-        inputId: inputIdentifier
+        input: inputIdentifier
       });
     },
     [dispatchFormState]
   );
 
-  if (prod)
-    return (
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior="padding"
-        keyboardVerticalOffset={100}
-      >
-        <ScrollView>
-          <View style={styles.form}>
+  return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior="padding"
+      keyboardVerticalOffset={100}
+    >
+      <ScrollView>
+        <View style={styles.form}>
+          <Input
+            id="title"
+            label="Title"
+            errorText="Please enter a valid title!"
+            keyboardType="default"
+            autoCapitalize="sentences"
+            autoCorrect
+            returnKeyType="next"
+            onInputChange={inputChangeHandler}
+            initialValue={editedProduct ? editedProduct.title : ''}
+            initiallyValid={!!editedProduct}
+            required
+          />
+          <Input
+            id="imageUrl"
+            label="Image Url"
+            errorText="Please enter a valid image url!"
+            keyboardType="default"
+            returnKeyType="next"
+            onInputChange={inputChangeHandler}
+            initialValue={editedProduct ? editedProduct.imageUrl : ''}
+            initiallyValid={!!editedProduct}
+            required
+          />
+          {editedProduct ? null : (
             <Input
-              id="title"
-              label="title"
-              errorText="Please enter a valid title!"
-              keyboardType="default"
-              autoCapitalize="sentences"
+              id="price"
+              label="Price"
+              errorText="Please enter a valid price!"
+              keyboardType="decimal-pad"
               returnKeyType="next"
               onInputChange={inputChangeHandler}
-              initialValue={editedProduct ? editedProduct.title : ''}
-              initiallyValid={!!editedProduct}
               required
+              min={0.1}
             />
-            <Input
-              id="imageUrl"
-              label="Image URL"
-              errorText="Please enter a valid image url!"
-              returnKeyType="next"
-              onInputChange={inputChangeHandler}
-              initialValue={editedProduct ? editedProduct.imageUrl : ''}
-              initiallyValid={!!editedProduct}
-              required
-            />
-            {editedProduct ? null : (
-              <Input
-                id="price"
-                label="Price"
-                errorText="Please enter a valid price!"
-                keyboardType="decimal-pad"
-                autoCapitalize="sentences"
-                returnKeyType="next"
-                onInputChange={inputChangeHandler}
-                min={0.1}
-              />
-            )}
-            <Input
-              id="description"
-              label="description"
-              errorText="Please enter a valid description!"
-              keyboardType="default"
-              autoCapitalize="sentences"
-              returnKeyType="next"
-              autoCorrect
-              multiline
-              numberOfLines={3}
-              initialValue={editedProduct ? editedProduct.description : ''}
-              initiallyValid={!!editedProduct}
-              onInputChange={inputChangeHandler.bind(this, 'description')}
-              required
-              minLength={5}
-            />
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    );
+          )}
+          <Input
+            id="description"
+            label="Description"
+            errorText="Please enter a valid description!"
+            keyboardType="default"
+            autoCapitalize="sentences"
+            autoCorrect
+            multiline
+            numberOfLines={3}
+            onInputChange={inputChangeHandler}
+            initialValue={editedProduct ? editedProduct.description : ''}
+            initiallyValid={!!editedProduct}
+            required
+            minLength={5}
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
 };
 
 EditProductScreen.navigationOptions = navData => {
-  const submitFn = navData.navigation.getPram('submit');
-
+  const submitFn = navData.navigation.getParam('submit');
   return {
-    headerTitle: navData.navigation.getPram('productId')
+    headerTitle: navData.navigation.getParam('productId')
       ? 'Edit Product'
       : 'Add Product',
     headerRight: (

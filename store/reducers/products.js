@@ -42,7 +42,7 @@ export default (state = initialState, action) => {
       const updatedUserProducts = [...state.userProducts];
       updatedUserProducts[productIndex] = updatedProduct;
       const availableProductIndex = state.availableProducts.findIndex(
-        prod => prod.id === action.id
+        prod => prod.id === action.pid
       );
       const updatedAvailableProducts = [...state.availableProducts];
       updatedAvailableProducts[availableProductIndex] = updatedProduct;
@@ -51,7 +51,6 @@ export default (state = initialState, action) => {
         availableProducts: updatedAvailableProducts,
         userProducts: updatedUserProducts
       };
-
     case DELETE_PRODUCT:
       return {
         ...state,

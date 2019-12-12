@@ -12,13 +12,11 @@ const inputReducer = (state, action) => {
         value: action.value,
         isValid: action.isValid
       };
-
     case INPUT_BLUR:
       return {
         ...state,
         touched: true
       };
-
     default:
       return state;
   }
@@ -57,7 +55,6 @@ const Input = props => {
     if (props.minLength != null && text.length < props.minLength) {
       isValid = false;
     }
-
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
   };
 
@@ -103,8 +100,8 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontFamily: 'open-sans',
-    fontSize: 13,
-    color: 'red'
+    color: 'red',
+    fontSize: 13
   }
 });
 

@@ -18,7 +18,7 @@ const OrderItem = props => {
         color={Colors.primary}
         title={showDetails ? 'Hide Details' : 'Show Details'}
         onPress={() => {
-          setShowDetails(prevStae => !prevStae);
+          setShowDetails(prevState => !prevState);
         }}
       />
       {showDetails && (
@@ -28,7 +28,7 @@ const OrderItem = props => {
               key={cartItem.productId}
               quantity={cartItem.quantity}
               amount={cartItem.sum}
-              title={cartItem.title}
+              title={cartItem.productTitle}
             />
           ))}
         </View>

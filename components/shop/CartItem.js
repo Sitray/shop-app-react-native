@@ -7,17 +7,16 @@ import {
   Platform
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform } from '@unimodules/core';
 
-const CartItem = () => {
+const CartItem = props => {
   return (
     <View style={styles.cartItem}>
-      <Text style={styles.itemData}>
+      <View style={styles.itemData}>
         <Text style={styles.quantity}>{props.quantity} </Text>
         <Text style={styles.mainText}>{props.title}</Text>
-      </Text>
+      </View>
       <View style={styles.itemData}>
-        <Text style={styles.mainText}>{props.amount.toFixed(2)}</Text>
+        <Text style={styles.mainText}>${props.amount.toFixed(2)}</Text>
         {props.deletable && (
           <TouchableOpacity
             onPress={props.onRemove}
