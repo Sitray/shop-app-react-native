@@ -42,11 +42,10 @@ const AuthScreen = props => {
               required
               minLength={5}
               errorMessage="Please enter a valid password"
-              onInputChange={() => {}}
+              onValueChange={() => {}}
               initialValue=""
             />
             <View style={styles.buttonContainer}>
-              {' '}
               <Button title="Login" color={Colors.primary} onPress={() => {}} />
             </View>
             <View style={styles.buttonContainer}>

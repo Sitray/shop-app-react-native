@@ -6,11 +6,11 @@ import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
-import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
+import ProductDetailScreen from '../screens/shop/ProductsDetailScreen';
 import CartScreen from '../screens/shop/CartScreen';
-import OrdersScreen from '../screens/shop/OrdersScreen';
+import OrdersScreen from '../screens/shop/OrderScreen';
 import AuthScreen from '../screens/user/AuthScreen';
-import UserProductsScreen from '../screens/user/UserProductsScreen';
+import UserProductsScreen from '../screens/user/UserProductScreen';
 import EditProductScreen from '../screens/user/EditProductScreen';
 import Colors from '../constants/Colors';
 
@@ -99,7 +99,7 @@ const ShopNavigator = createDrawerNavigator(
 
 const AuthNavigator = createStackNavigator(
   {
-    Auth: AuthNavigator
+    Auth: AuthScreen
   },
   {
     defaultNavigationOptions: defaultNavOptions
